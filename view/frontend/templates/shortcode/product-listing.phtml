@@ -1,0 +1,54 @@
+<?php
+/**
+ * @category    Fishpig
+ * @package     Fishpig_Wordpress
+ * @license     http://fishpig.co.uk/license.txt
+ * @author      Ben Tideswell <help@fishpig.co.uk>
+ */
+?>
+<?php
+/**
+ * Listing of products from shortcode
+ *
+ * @var $block \Magento\Catalog\Block\Product\ListProduct
+ */
+$_helper = $this->helper('Magento\Catalog\Helper\Output');
+?>
+<?php if (count($this->getProducts())): ?>
+
+	<div class="products wrapper grid products-grid">
+		<ol class="products list items product-items">
+			<?php /** @var $_product \Magento\Catalog\Model\Product */ ?>
+			<?php foreach ($this->getProducts() as $_product): ?>
+				<li class="item product product-item">
+					<div class="product-item-info" data-container="product-grid">
+						<?php
+						$productImage = $block->getImage($_product, 'category_page_grid');
+						?>
+						<?php // Product Image ?>
+						<a href="<?= /* @escapeNotVerified */ $_product->getProductUrl() ?>" class="product photo product-item-photo" tabindex="-1">
+							<?= $productImage->toHtml() ?>
+						</a>
+						<div class="product details product-item-details">
+							<?php
+							$_productNameStripped = $block->stripTags($_product->getName(), null, true);
+							?>
+							<strong class="product name product-item-name">
+								<a class="product-item-link"
+								   href="<?= /* @escapeNotVerified */ $_product->getProductUrl() ?>">
+									<?= /* @escapeNotVerified */ $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
+								</a>
+							</strong>
+							<?= $block->getReviewsSummaryHtml($_product, \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW) ?>
+							<?= /* @escapeNotVerified */ $block->getProductPrice($_product) ?>
+							<?= $block->getProductDetailsHtml($_product) ?>
+
+
+						</div>
+					</div>
+				</li>
+			<?php endforeach; ?>
+		</ol>
+	</div>
+
+<?php endif; ?>
